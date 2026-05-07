@@ -1524,3 +1524,684 @@ html, body {
   background: rgba(74, 158, 255, 0.15);
   color: var(--accent-blue);
 }
+
+@media screen and (max-width: 768px) {
+  html, body {
+    font-size: 14px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  #app {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .game-title {
+    font-size: 2.2rem;
+    letter-spacing: 4px;
+  }
+
+  .game-subtitle {
+    font-size: 1rem;
+    letter-spacing: 6px;
+    margin-bottom: 20px;
+  }
+
+  .menu-stats {
+    font-size: 0.75rem;
+    gap: 12px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    min-width: 100px;
+  }
+
+  .btn-small {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    min-height: 44px;
+  }
+
+  .btn-group {
+    width: 240px;
+  }
+
+  .character-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .character-card {
+    width: 90%;
+    max-width: 340px;
+    padding: 16px;
+  }
+
+  .top-bar {
+    padding: 6px 10px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .top-bar-left, .top-bar-right {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    font-size: 0.85rem;
+  }
+
+  .floor-indicator {
+    font-size: 0.75rem;
+  }
+
+  .potion-icon, .relic-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.7rem;
+    min-height: 36px;
+  }
+
+  .battle-screen {
+    height: 100dvh;
+    max-height: 100dvh;
+  }
+
+  @supports not (height: 100dvh) {
+    .battle-screen {
+      height: 100vh;
+      max-height: 100vh;
+    }
+  }
+
+  .enemy-area {
+    gap: 8px;
+    padding: 6px 8px;
+    min-height: 100px;
+    max-height: 26vh;
+    flex-shrink: 0;
+  }
+
+  .enemy {
+    min-width: 90px;
+    max-width: 140px;
+    padding: 6px 8px;
+  }
+
+  .enemy-name {
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+  }
+
+  .enemy-intent {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+    padding: 2px 6px;
+  }
+
+  .enemy-hp-text {
+    font-size: 0.65rem;
+  }
+
+  .enemy-block {
+    font-size: 0.7rem;
+  }
+
+  .hp-bar {
+    height: 4px;
+  }
+
+  .enemy-powers {
+    gap: 3px;
+    margin-top: 4px;
+  }
+
+  .player-area {
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+
+  .player-stats {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .energy-orb {
+    width: 40px;
+    height: 40px;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .mechanic-indicator {
+    font-size: 0.9rem;
+    padding: 4px 10px;
+    min-height: 36px;
+  }
+
+  .power-icon {
+    font-size: 0.65rem;
+    padding: 2px 5px;
+  }
+
+  .power-icon-sm {
+    font-size: 0.55rem;
+    padding: 1px 4px;
+  }
+
+  .middle-bar {
+    padding: 2px 8px;
+    flex-shrink: 0;
+  }
+
+  .middle-bar-content {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .deck-counter {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+  }
+
+  .end-turn-btn {
+    min-width: 110px;
+    font-size: 0.9rem;
+    padding: 8px 14px;
+    min-height: 44px;
+  }
+
+  .power-area-indicator {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .hand-container {
+    gap: 6px;
+    padding: 4px 8px;
+    min-height: 140px;
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    align-items: flex-end;
+    scrollbar-width: none;
+  }
+
+  .hand-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    width: 100px;
+    min-width: 100px;
+    height: 148px;
+    padding: 5px;
+    flex-shrink: 0;
+  }
+
+  .card-cost {
+    width: 22px;
+    height: 22px;
+    font-size: 0.75rem;
+  }
+
+  .card-name {
+    font-size: 0.7rem;
+    margin-top: 18px;
+    line-height: 1.1;
+  }
+
+  .card-type {
+    font-size: 0.5rem;
+  }
+
+  .card-description {
+    font-size: 0.55rem;
+    line-height: 1.2;
+  }
+
+  .card.playable:hover {
+    transform: translateY(-6px) !important;
+  }
+
+  .card.selected {
+    transform: translateY(-10px) !important;
+  }
+
+  .battle-log {
+    width: 160px;
+    max-height: 70px;
+    font-size: 0.55rem;
+    bottom: 4px;
+    right: 4px;
+    padding: 4px;
+  }
+
+  .map-container {
+    padding: 10px;
+  }
+
+  .map-row {
+    gap: 8px;
+    min-height: 38px;
+  }
+
+  .map-node {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+
+  .camp-container {
+    padding: 16px;
+  }
+
+  .campfire {
+    font-size: 3rem;
+  }
+
+  .camp-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .camp-btn {
+    min-width: 200px;
+    min-height: 60px;
+  }
+
+  .camp-btn-icon {
+    font-size: 1.2rem;
+  }
+
+  .shop-screen {
+    padding: 10px;
+  }
+
+  .shop-container {
+    gap: 6px;
+  }
+
+  .shop-section-title {
+    font-size: 0.9rem;
+  }
+
+  .shop-items-row {
+    gap: 8px;
+  }
+
+  .shop-relic-item, .shop-potion-item {
+    min-width: 130px;
+    padding: 10px;
+  }
+
+  .shop-relic-name, .shop-potion-name {
+    font-size: 0.85rem;
+  }
+
+  .shop-relic-desc, .shop-potion-desc {
+    font-size: 0.7rem;
+  }
+
+  .event-container {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .event-illustration {
+    font-size: 3rem;
+  }
+
+  .event-title {
+    font-size: 1.4rem;
+  }
+
+  .event-description {
+    font-size: 0.85rem;
+  }
+
+  .event-choice-btn {
+    font-size: 0.9rem;
+    padding: 12px 16px;
+    min-height: 44px;
+  }
+
+  .treasure-chest {
+    font-size: 3rem;
+  }
+
+  .treasure-relic {
+    padding: 12px 16px;
+  }
+
+  .treasure-relic-name {
+    font-size: 1.1rem;
+  }
+
+  .treasure-relic-desc {
+    font-size: 0.8rem;
+  }
+
+  .treasure-actions {
+    flex-wrap: wrap;
+  }
+
+  .game-over-title, .victory-title {
+    font-size: 2rem;
+  }
+
+  .dialog {
+    padding: 16px;
+    max-width: 92%;
+    margin: 0 auto;
+  }
+
+  .dialog-title {
+    font-size: 1.1rem;
+  }
+
+  .dialog-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dialog-buttons .btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .js-tooltip {
+    font-size: 0.85rem;
+    max-width: 220px;
+    padding: 10px 12px;
+    pointer-events: auto;
+  }
+
+  .js-tooltip .tooltip-name {
+    font-size: 0.9rem;
+  }
+
+  .js-tooltip .tooltip-desc {
+    font-size: 0.8rem;
+  }
+
+  .seed-input {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+
+  .boss-relic-choice {
+    min-width: 140px;
+    padding: 12px;
+  }
+
+  .boss-relic-name {
+    font-size: 0.95rem;
+  }
+
+  .boss-relic-desc {
+    font-size: 0.75rem;
+  }
+
+  .reward-container {
+    gap: 8px;
+  }
+
+  .reward-card {
+    flex-shrink: 0;
+  }
+
+  .reward-container-screen {
+    padding: 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  html, body {
+    font-size: 14px;
+  }
+
+  .game-title {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+
+  .game-subtitle {
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    min-width: 80px;
+    min-height: 44px;
+  }
+
+  .btn-group {
+    width: 220px;
+  }
+
+  .character-card {
+    padding: 12px;
+  }
+
+  .character-name {
+    font-size: 1rem;
+  }
+
+  .top-bar {
+    padding: 4px 6px;
+  }
+
+  .stat {
+    font-size: 0.75rem;
+  }
+
+  .potion-icon, .relic-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.6rem;
+    min-height: 32px;
+  }
+
+  .enemy-area {
+    min-height: 80px;
+    max-height: 22vh;
+    gap: 6px;
+    padding: 4px 6px;
+  }
+
+  .enemy {
+    min-width: 80px;
+    max-width: 110px;
+    padding: 4px 6px;
+  }
+
+  .enemy-name {
+    font-size: 0.7rem;
+    margin-bottom: 2px;
+  }
+
+  .enemy-intent {
+    font-size: 0.65rem;
+    margin-bottom: 2px;
+    padding: 1px 4px;
+  }
+
+  .enemy-hp-text {
+    font-size: 0.6rem;
+  }
+
+  .energy-orb {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+
+  .mechanic-indicator {
+    font-size: 0.85rem;
+    padding: 3px 8px;
+    min-height: 32px;
+  }
+
+  .hand-container {
+    gap: 4px;
+    padding: 4px 6px;
+    min-height: 130px;
+  }
+
+  .card {
+    width: 88px;
+    min-width: 88px;
+    height: 132px;
+    padding: 4px;
+    border-radius: 6px;
+  }
+
+  .card-cost {
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+    top: 2px;
+    left: 2px;
+  }
+
+  .card-name {
+    font-size: 0.65rem;
+    margin-top: 16px;
+    margin-bottom: 1px;
+    line-height: 1.1;
+  }
+
+  .card-type {
+    font-size: 0.45rem;
+    margin-bottom: 1px;
+  }
+
+  .card-description {
+    font-size: 0.52rem;
+    line-height: 1.15;
+  }
+
+  .card-exhaust {
+    font-size: 0.45rem;
+  }
+
+  .card.playable:hover {
+    transform: none !important;
+  }
+
+  .card.selected {
+    transform: translateY(-8px) !important;
+  }
+
+  .end-turn-btn {
+    min-width: 100px;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    min-height: 44px;
+  }
+
+  .deck-counter {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+    min-height: 32px;
+  }
+
+  .battle-log {
+    width: 130px;
+    max-height: 50px;
+    font-size: 0.5rem;
+    padding: 3px;
+  }
+
+  .map-node {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
+
+  .map-row {
+    gap: 6px;
+    min-height: 32px;
+  }
+
+  .campfire {
+    font-size: 2.5rem;
+  }
+
+  .camp-btn {
+    min-width: 180px;
+    min-height: 54px;
+  }
+
+  .event-illustration {
+    font-size: 2.5rem;
+  }
+
+  .event-title {
+    font-size: 1.2rem;
+  }
+
+  .event-description {
+    font-size: 0.8rem;
+  }
+
+  .event-choice-btn {
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .treasure-chest {
+    font-size: 2.5rem;
+  }
+
+  .game-over-title, .victory-title {
+    font-size: 1.6rem;
+  }
+
+  .game-over-stats, .victory-stats {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .js-tooltip {
+    font-size: 0.8rem;
+    max-width: 200px;
+    padding: 8px 10px;
+    pointer-events: auto;
+  }
+
+  .shop-relic-item, .shop-potion-item {
+    min-width: 110px;
+    padding: 8px;
+  }
+
+  .boss-relic-choice {
+    min-width: 120px;
+    padding: 10px;
+  }
+
+  .reward-container-screen {
+    padding: 12px;
+  }
+}

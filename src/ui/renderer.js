@@ -125,6 +125,8 @@ export default class Renderer {
     this._selectedAscension = 0;
     this._eventResultText = '';
     this._showingEventResult = false;
+    this._currentTooltip = null;
+    this._currentTooltipAnchor = null;
   }
 
   init() {
@@ -900,40 +902,76 @@ export default class Renderer {
       }
       const tipEl = e.target.closest('.js-tip');
       if (tipEl) {
-        const tipType = tipEl.dataset.tipType;
-        const tipId = tipEl.dataset.tipId;
-        if (tipType === 'relic') {
-          const relic = RELICS.find(r => r.id === tipId);
-          if (relic) {
-            this._showTooltip(tipEl, relic.name, relic.description, null, 'special');
-          }
-        } else if (tipType === 'potion') {
-          const pot = POTIONS.find(p => p.id === tipId);
-          if (pot) {
-            this._showTooltip(tipEl, pot.name, pot.description, null, 'buff');
-          }
-        } else if (tipType === 'mechanic') {
-          const MECHANIC_INFO = {
-            fury: { name: '战意', desc: '每点战意使攻击牌伤害增加1点。部分卡牌效果与战意层数相关。' },
-            resonance: { name: '共鸣', desc: '共鸣层数影响法术牌的效果强度。部分卡牌消耗共鸣产生强力效果。' },
-            combo: { name: '连击', desc: '每打出一张攻击牌，连击+1。连击层数影响部分攻击牌的额外效果。回合开始时连击重置。' },
-            devotion: { name: '虔诚', desc: '虔诚是祭司的核心资源，用于施放神圣法术和触发圣礼效果。' }
-          };
-          const info = MECHANIC_INFO[tipId];
-          if (info) {
-            this._showTooltip(tipEl, info.name, info.desc, null, 'buff');
-          }
-        }
+        this._handleJsTip(tipEl);
       }
     });
     document.addEventListener('mouseout', (e) => {
       const el = e.target.closest('.power-tooltip') || e.target.closest('.js-tip');
       if (el) this._hideTooltip();
     });
+    document.addEventListener('click', (e) => {
+      const powerEl = e.target.closest('.power-tooltip');
+      if (powerEl) {
+        e.stopPropagation();
+        const pid = powerEl.dataset.pid;
+        if (!pid) return;
+        if (this._currentTooltip && this._currentTooltipAnchor === powerEl) {
+          this._hideTooltip();
+          return;
+        }
+        const name = POWER_NAMES[pid] || pid;
+        const desc = POWER_DESCRIPTIONS[pid] || '';
+        const stacks = parseInt(powerEl.dataset.pstacks) || 0;
+        const category = POWER_CATEGORIES[pid] || 'special';
+        this._showTooltip(powerEl, name, desc, stacks, category);
+        return;
+      }
+      const tipEl = e.target.closest('.js-tip');
+      if (tipEl) {
+        e.stopPropagation();
+        if (this._currentTooltip && this._currentTooltipAnchor === tipEl) {
+          this._hideTooltip();
+          return;
+        }
+        this._handleJsTip(tipEl);
+        return;
+      }
+      if (this._currentTooltip) {
+        this._hideTooltip();
+      }
+    });
+  }
+
+  _handleJsTip(tipEl) {
+    const tipType = tipEl.dataset.tipType;
+    const tipId = tipEl.dataset.tipId;
+    if (tipType === 'relic') {
+      const relic = RELICS.find(r => r.id === tipId);
+      if (relic) {
+        this._showTooltip(tipEl, relic.name, relic.description, null, 'special');
+      }
+    } else if (tipType === 'potion') {
+      const pot = POTIONS.find(p => p.id === tipId);
+      if (pot) {
+        this._showTooltip(tipEl, pot.name, pot.description, null, 'buff');
+      }
+    } else if (tipType === 'mechanic') {
+      const MECHANIC_INFO = {
+        fury: { name: '战意', desc: '每点战意使攻击牌伤害增加1点。部分卡牌效果与战意层数相关。' },
+        resonance: { name: '共鸣', desc: '共鸣层数影响法术牌的效果强度。部分卡牌消耗共鸣产生强力效果。' },
+        combo: { name: '连击', desc: '每打出一张攻击牌，连击+1。连击层数影响部分攻击牌的额外效果。回合开始时连击重置。' },
+        devotion: { name: '虔诚', desc: '虔诚是祭司的核心资源，用于施放神圣法术和触发圣礼效果。' }
+      };
+      const info = MECHANIC_INFO[tipId];
+      if (info) {
+        this._showTooltip(tipEl, info.name, info.desc, null, 'buff');
+      }
+    }
   }
 
   _showTooltip(anchor, name, desc, stacks, category) {
     this._hideTooltip();
+    this._currentTooltipAnchor = anchor;
     const tip = document.createElement('div');
     tip.className = 'js-tooltip';
     tip.innerHTML = `
@@ -941,19 +979,28 @@ export default class Renderer {
       ${desc ? `<div class="tooltip-desc">${desc}</div>` : ''}
       ${stacks !== null ? `<div class="tooltip-stacks">层数: ${stacks}</div>` : ''}
     `;
+    tip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this._hideTooltip();
+    });
     document.body.appendChild(tip);
 
     const rect = anchor.getBoundingClientRect();
     const tipRect = tip.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
     let left = rect.left + rect.width / 2 - tipRect.width / 2;
     let top = rect.top - tipRect.height - 8;
 
     if (top < 4) {
       top = rect.bottom + 8;
     }
+    if (top + tipRect.height > vh - 4) {
+      top = vh - tipRect.height - 4;
+    }
     if (left < 4) left = 4;
-    if (left + tipRect.width > window.innerWidth - 4) {
-      left = window.innerWidth - tipRect.width - 4;
+    if (left + tipRect.width > vw - 4) {
+      left = vw - tipRect.width - 4;
     }
 
     tip.style.left = `${left}px`;

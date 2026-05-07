@@ -567,8 +567,7 @@ export default class Renderer {
     screen.innerHTML = `
       <div class="top-bar" id="battle-top-bar"></div>
       <div class="enemy-area" id="enemy-area"></div>
-      <div class="player-area" id="player-area"></div>
-      <div class="middle-bar" id="middle-bar"></div>
+      <div class="action-bar" id="action-bar"></div>
       <div class="hand-container" id="hand-container"></div>
       <div class="battle-log" id="battle-log"></div>
     `;
@@ -660,33 +659,24 @@ export default class Renderer {
       this._bindEnemyEvents();
     }
 
-    const playerArea = document.getElementById('player-area');
-    if (playerArea) {
-      playerArea.innerHTML = `
-        <div class="player-stats">
-          <div class="energy-orb">${p.energy}/${p.maxEnergy}</div>
-          <div class="player-powers">${this._renderPlayerPowers(p)}</div>
-          <div class="player-mechanic">${this._renderMechanic(p)}</div>
-          ${this._hasActivePowers(p) ? `<div class="power-area-indicator clickable" id="power-area-btn" title="查看能力详情">⚡</div>` : ''}
-        </div>
-      `;
-      const powerAreaBtn = document.getElementById('power-area-btn');
-      if (powerAreaBtn) {
-        powerAreaBtn.addEventListener('click', () => this._showPileView('powers'));
-      }
-    }
-
-    const middleBar = document.getElementById('middle-bar');
-    if (middleBar) {
+    const actionBar = document.getElementById('action-bar');
+    if (actionBar) {
       const canEndTurn = battle.isPlayerTurn && !battle.gameOver;
-      middleBar.innerHTML = `
-        <div class="middle-bar-content">
-          <div class="deck-counter clickable" id="draw-counter" title="查看抽牌堆">📚 ${p.drawPile.length}</div>
-          <div class="player-powers-bar">${this._renderPlayerPowersBar(p)}</div>
+      actionBar.innerHTML = `
+        <div class="action-bar-left">
+          <div class="energy-orb">${p.energy}/${p.maxEnergy}</div>
+          <div class="action-powers">${this._renderPlayerPowers(p)}</div>
+          <div class="player-mechanic">${this._renderMechanic(p)}</div>
+        </div>
+        <div class="action-bar-center">
+          <div class="deck-counter clickable" id="draw-counter" title="查看抽牌堆">📚${p.drawPile.length}</div>
           <button class="btn btn-primary end-turn-btn" id="btn-end-turn" ${!canEndTurn ? 'disabled' : ''}>
             ${canEndTurn ? '结束回合' : '敌方回合...'}
           </button>
-          <div class="deck-counter clickable" id="discard-counter" title="查看弃牌堆">🗑️ ${p.discardPile.length}</div>
+          <div class="deck-counter clickable" id="discard-counter" title="查看弃牌堆">🗑️${p.discardPile.length}</div>
+        </div>
+        <div class="action-bar-right">
+          ${this._hasActivePowers(p) ? `<div class="power-area-indicator clickable" id="power-area-btn" title="查看能力详情">⚡</div>` : ''}
         </div>
       `;
       const endBtn = document.getElementById('btn-end-turn');
@@ -709,6 +699,11 @@ export default class Renderer {
       const discardCounter = document.getElementById('discard-counter');
       if (discardCounter) {
         discardCounter.addEventListener('click', () => this._showPileView('discard'));
+      }
+
+      const powerAreaBtn = document.getElementById('power-area-btn');
+      if (powerAreaBtn) {
+        powerAreaBtn.addEventListener('click', () => this._showPileView('powers'));
       }
     }
 
@@ -797,16 +792,12 @@ export default class Renderer {
       };
       const typeClass = typeColors[cardData.type] || '';
 
-      const angle = handSize > 1 ? (i - (handSize - 1) / 2) * 5 : 0;
-      const yOffset = Math.abs(i - (handSize - 1) / 2) * 8;
-
       html += `
         <div class="card ${playableClass} ${selectedClass} ${typeClass}" 
              data-hand-index="${i}" 
              data-needs-target="${needsTarget}"
              data-rarity="${cardData.rarity}"
-             data-type="${cardData.type}"
-             style="transform: rotate(${angle}deg) translateY(${yOffset}px)">
+             data-type="${cardData.type}">
           <div class="card-cost">${cost}</div>
           <div class="card-name">${cardData.name}${cardData.upgraded ? '+' : ''}</div>
           <div class="card-type">${this._getTypeName(cardData.type)}</div>
@@ -1091,6 +1082,7 @@ export default class Renderer {
   }
 
   _bindCardEvents() {
+    const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     document.querySelectorAll('.card.playable').forEach(card => {
       card.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -1119,13 +1111,11 @@ export default class Renderer {
         }
       });
 
-      card.addEventListener('mousedown', (e) => {
-        this._startDrag(e, card);
-      });
-
-      card.addEventListener('touchstart', (e) => {
-        this._startDrag(e, card);
-      }, { passive: false });
+      if (!isMobile) {
+        card.addEventListener('mousedown', (e) => {
+          this._startDrag(e, card);
+        });
+      }
     });
   }
 
